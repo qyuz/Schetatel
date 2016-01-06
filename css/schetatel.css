@@ -1,0 +1,24 @@
+body {
+	overflow-y: scroll;
+}
+
+schetatel>.content { 
+	position: absolute;
+	margin-top: 52px; 
+	width: 100%;
+}
+
+schetatel>.content>*:not(.display) {
+	display: none;
+}
+
+schetatel>.content>filter-form {
+    position: absolute;
+	top: 100px;
+	left: 50%;
+	margin-left: -200px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: rgb(248, 248, 248);
+    z-index: 1030;
+}
