@@ -1,4 +1,4 @@
 export class NavPill {
-	constructor(public title: string, public active?: boolean, public badge?: string) {	
+	constructor(public title: string, public label?: string, public active?: boolean, public badge?: string) {
 	}
 }

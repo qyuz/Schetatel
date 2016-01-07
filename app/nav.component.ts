@@ -9,12 +9,13 @@ import {NavPill} from './nav.pill';
 			  <a class="navbar-brand">{{ brand }}</a>
 			</div>
 			<ul class="nav nav-pills">
-				<li *ngFor="#navPill of navPills; #index=index"
-					(click)="_navSelect(index)" 
-					[class.active]="selectedIndex == index">
-					<a>{{ navPill.title }} <span class="badge">{{ navPill.badge }}</span>
-					</a>
-				</li>
+				<template ngFor #navPill [ngForOf]="navPills" #index="index">
+					<p *ngIf="navPill.label" class="navbar-text">{{ navPill.label }}</p>
+					<li (click)="_navSelect(index)" 
+						[class.active]="selectedIndex == index">
+						<a>{{ navPill.title }} <span class="badge">{{ navPill.badge }}</span></a>
+					</li>
+				</template>
 			</ul>
 		</div>
 	`,

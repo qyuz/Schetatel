@@ -71,8 +71,8 @@ export class SchetatelComponent {
 		new NavPill('All'),
 		new NavPill('Found'),
 		new NavPill('Missing'),
-		new NavPill('Filters', true),
-		new NavPill('Add filter')
+		new NavPill('All', 'Filters', true),
+		new NavPill('Add')
 	]
 	
 	items:any[] = [
