@@ -23,7 +23,7 @@ import {FilterItem} from './filter.item'
 					<td class="col-md-1">{{ item.number }}</td>
 					<td class="col-md-1">{{ item.date }}</td>
 					<td class="col-md-1">
-						<div style="float: left; padding-right: 5px;" (click)="_add(index)">Add</div>
+						<div style="float: left; padding-right: 5px;" (click)="_add(index, item)">Add</div>
 						<div style="float: left;" (click)="_remove(index, item)">Remove</div>
 					</td>
 				</tr>
@@ -40,15 +40,15 @@ import {FilterItem} from './filter.item'
 })
 
 export class FilterTableComponent {
-	public test: boolean = true;
+	test: boolean = true;
 	
-	public items: FilterItem[];
-	add = new EventEmitter<int>();
+	items: FilterItem[];
+	add = new EventEmitter<FilterItem>();
 	remove = new EventEmitter<FilterItem>();
 	
-	_add(index) {
-		this.test && console.log('add ', index);
-		this.add.next(index);
+	_add(index, item) {
+		this.test && console.log('add ', index, item);
+		this.add.next(item);
 	}
 	
 	_remove(index, item) {

@@ -26,12 +26,13 @@ import {FilterItemService} from './filter.item.service';
 				<input [(ngModel)]="item.date" type="text" class="form-control" placeholder="Date">
 			</label>
 		  </div>
-		  <button class="btn btn-default" [disabled]="item.name == '' || (item.description == '' && item.number == '' && item.date == '')" (click)="add.next(item)">Add</button>
+		  <button class="btn btn-default" [disabled]="!item.name || (!item.description && !item.number && !item.date)" (click)="add.next(item)">Add</button>
 		  <button class="btn btn-success" (click)="testFilter(item)">Test</button>
 		  <button class="btn btn-warning" (click)="clear()">Clear</button>
 		</form>
 	`,
 	inputs: [
+		'item'
 	],
 	outputs: [
 		'add'
@@ -39,14 +40,14 @@ import {FilterItemService} from './filter.item.service';
 })
 
 export class FilterFormComponent {
-	public test: boolean = true;
+	test: boolean = true;
 	
-	public item: FilterItem = new FilterItem();
+	private item: FilterItem;
 	add = new EventEmitter<FilterItem>();
 		
 	clear() {
 		this.test && console.log('clear ', this.item);
-		this.item = new FilterItem();
+		this.item.clear();
 	}
 	
 	testFilter(item: FilterItem) {

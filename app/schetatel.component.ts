@@ -43,8 +43,8 @@ import {NavPill} from './nav.pill'
 					</tr> 
 				</tbody> 
 			</table>
-			<filter-table [items]="filterItemService.items" (add)="filterFormToggle(true)" (remove)="removeFilter($event)" [class.display]="navIndex == 3"></filter-table>
-			<filter-form (add)="addFilter($event)" [class.display]="filterFormVisible == true || navIndex == 4"></filter-form>
+			<filter-table [items]="filterItemService.items" (add)="setFilterForm($event)" (remove)="removeFilter($event)" [class.display]="navIndex == 3"></filter-table>
+			<filter-form [item]="filterFormItem" (add)="addFilter($event)" [class.display]="filterFormVisible == true || navIndex == 4"></filter-form>
 		</div>
 		
 	`,
@@ -57,51 +57,49 @@ import {NavPill} from './nav.pill'
 })
 
 export class SchetatelComponent {
-	public test: boolean = true;
+	test: boolean = true;
 	
-	navIndex: int;
-	filterFormVisible: boolean = false;
-	filterItemService: FilterItemService;
+	private navIndex: number;
+	private filterFormItem: FilterItem = new FilterItem();
+	private filterFormVisible: boolean = false;
+	private filterItemService: FilterItemService;
 	
-	constructor(filterItemService: FilterItemService) {
-		var schetatelComponent = this;
-		
-		this.filterItemService = filterItemService;
+	constructor(private filterItemService: FilterItemService) {
 	}
 	
-	public navPills:NavPill[] = [
-		{ title: 'All'},
-		{ title: 'Found' },
-		{ title: 'Missing' },
-		{ title: 'Filters', active: true   },
-		{ title: 'Add filter' }
+	navPills: NavPill[] = [
+		new NavPill('All'),
+		new NavPill('Found'),
+		new NavPill('Missing'),
+		new NavPill('Filters', true),
+		new NavPill('Add filter')
 	]
-	public items:any[] = [
+	
+	items:any[] = [
 		{ description: "yo", filterName: "filter name", number: 10, date: "date" }
 	]
-	
-	// public filterItems: FilterItem[] 
-	// = [
-		// { name: "Name", description: "description", number: 20, date: "now" }
-	// ]
 
-	public nvSlct(indx) {
+	nvSlct(indx: number) {
 		this.navIndex = indx;
 		this.test && console.log('navIndex ', indx)
-	};
+	}
 	
-	public addFilter(item) {
+	addFilter(item: FilterItem) {
 		this.test && console.log('add filter ', item)
 		this.filterItemService.add(item);
 	}
 	
-	public removeFilter(item) {
+	removeFilter(item: FilterItem) {
 		this.test && console.log('remove filter ', item);
 		this.filterItemService.remove(item);
-		this.filterFormVisible = false;
 	}
 	
-	public filterFormToggle(open) {
+	setFilterForm(item: FilterItem) {
+		this.toggleFilterForm(true);
+		this.filterFormItem = new FilterItem(item.name, item.description, item.number, item.date);
+	}
+	
+	toggleFilterForm(open: boolean) {
 		this.filterFormVisible = open;
 	}
 }

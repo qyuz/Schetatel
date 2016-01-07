@@ -1,5 +1,4 @@
-export interface NavPill {
-	public active: boolean;
-	public badge: string;
-	public title: string;
+export class NavPill {
+	constructor(public title: string, public active?: boolean, public badge?: string) {	
+	}
 }

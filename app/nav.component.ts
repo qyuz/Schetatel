@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input} from 'angular2/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit} from 'angular2/core';
 import {NavPill} from './nav.pill';
 
 @Component({
@@ -27,12 +27,12 @@ import {NavPill} from './nav.pill';
 	]
 })
 
-export class NavComponent implements onInit {
+export class NavComponent implements OnInit {
 	brand: string;
 	navPills: NavPill[];
-	navSelect = new EventEmitter<int, NavPill>();
-	public test: booelean = true;
-	public selectedIndex: int;
+	navSelect = new EventEmitter<number>();
+	test: boolean = true;
+	selectedIndex: number;
 	
 	_navSelect(index) {
 		this.test && console.log('nav select ', index);
@@ -40,7 +40,7 @@ export class NavComponent implements onInit {
 		this.navSelect.next(index);
 	}
 	
-	constructor(public element: ElementRef) {
+	constructor(element: ElementRef) {
 		element.nativeElement.classList.add('navbar');
 		element.nativeElement.classList.add('navbar-default');
 		element.nativeElement.classList.add('navbar-fixed-top');

@@ -39,19 +39,19 @@ import {Component, EventEmitter} from 'angular2/core';
 })
 
 export class AllTableComponent {
-	public test: boolean = true;
+	test: boolean = true;
 	
-	public items: any;
-	addFilter = new EventEmitter<int, any>();
-	removeFilter = new EventEmitter<int, any>();
+	items: any;
+	addFilter = new EventEmitter<number>();
+	removeFilter = new EventEmitter<number>();
 	
 	_addFilter(index) {
 		this.test && console.log('add filter ', index);
-		this.addFilter.next(index, this.items[index]);
+		this.addFilter.next(index);
 	}
 	
 	_removeFilter(index) {
 		this.test && console.log('remove filter ', index);
-		this.removeFilter.next(index, this.items[index]);
+		this.removeFilter.next(index);
 	}
 }
