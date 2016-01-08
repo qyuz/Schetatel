@@ -5,15 +5,15 @@ import {FilterFormComponent} from './filter.form.component'
 import {FilterItem} from './filter.item'
 import {FilterItemService} from './filter.item.service'
 import {NavComponent} from './nav.component'
-import {NavPill} from './nav.pill'
+import {NavItem, NavPill, NavText} from './nav.item'
 
 @Component({
     selector: 'schetatel',
 	template: `
-		<nav [brand]="'Schetatel'" [navPills]="navPills" (navSelect)="nvSlct($event)"></nav>
+		<nav [brand]="'Schetatel'" [items]="navItems" (navSelect)="nvSlct($event)"></nav>
 		<div class="content">
-			<all-table [items]="items" [class.display]="navIndex == 0"></all-table>
-			<table class="table" [class.display]="navIndex == 1">
+			<all-table [items]="items" [class.display]="navSelected == navAll"></all-table>
+			<table class="table" [class.display]="navSelected == navFound">
 				<thead> 
 					<tr> 
 						<th>#</th> 
@@ -43,8 +43,8 @@ import {NavPill} from './nav.pill'
 					</tr> 
 				</tbody> 
 			</table>
-			<filter-table [items]="filterItemService.items" (add)="setFilterForm($event)" (remove)="removeFilter($event)" [class.display]="navIndex == 3"></filter-table>
-			<filter-form [item]="filterFormItem" (add)="addFilter($event)" [class.display]="filterFormVisible == true || navIndex == 4"></filter-form>
+			<filter-table [items]="filterItemService.items" (add)="setFilterForm($event)" (remove)="removeFilter($event)" [class.display]="navSelected == navFiltersAll"></filter-table>
+			<filter-form [item]="filterFormItem" (add)="addFilter($event)" [class.display]="filterFormVisible == true || navSelected == navFiltersAdd"></filter-form>
 		</div>
 		
 	`,
@@ -59,7 +59,13 @@ import {NavPill} from './nav.pill'
 export class SchetatelComponent {
 	test: boolean = true;
 	
-	private navIndex: number;
+	private navSelected: NavItem;
+	private navAll: NavPill = new NavPill('All');
+	private navFound: NavPill = new NavPill('Found');
+	private navMissing: NavPill = new NavPill('Missing');
+	private navFiltersAll: NavPill = new NavPill('All', true);
+	private navFiltersAdd: NavPill = new NavPill('Add');
+	
 	private filterFormItem: FilterItem = new FilterItem();
 	private filterFormVisible: boolean = false;
 	private filterItemService: FilterItemService;
@@ -67,21 +73,22 @@ export class SchetatelComponent {
 	constructor(private filterItemService: FilterItemService) {
 	}
 	
-	navPills: NavPill[] = [
-		new NavPill('All'),
-		new NavPill('Found'),
-		new NavPill('Missing'),
-		new NavPill('All', 'Filters', true),
-		new NavPill('Add')
+	navItems: NavItem[] = [
+		this.navAll,
+		this.navFound,
+		this.navMissing,
+		new NavText('Filters'),
+		this.navFiltersAll,
+		this.navFiltersAdd
 	]
 	
 	items:any[] = [
 		{ description: "yo", filterName: "filter name", number: 10, date: "date" }
 	]
 
-	nvSlct(indx: number) {
-		this.navIndex = indx;
-		this.test && console.log('navIndex ', indx)
+	nvSlct(item: NavItem) {
+		this.navSelected = item;
+		this.test && console.log('nvSlct ', item)
 	}
 	
 	addFilter(item: FilterItem) {

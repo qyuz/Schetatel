@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit} from 'angular2/core';
-import {NavPill} from './nav.pill';
+import {NavItem, NavPill, NavText} from './nav.item';
 
 @Component({
     selector: 'nav',
@@ -9,11 +9,12 @@ import {NavPill} from './nav.pill';
 			  <a class="navbar-brand">{{ brand }}</a>
 			</div>
 			<ul class="nav nav-pills">
-				<template ngFor #navPill [ngForOf]="navPills" #index="index">
-					<p *ngIf="navPill.label" class="navbar-text">{{ navPill.label }}</p>
-					<li (click)="_navSelect(index)" 
-						[class.active]="selectedIndex == index">
-						<a>{{ navPill.title }} <span class="badge">{{ navPill.badge }}</span></a>
+				<template ngFor #item [ngForOf]="items" #index="index">
+					<p *ngIf="item.type == 'NavText'" class="navbar-text">{{ item.text }}</p>
+					<li *ngIf="item.type == 'NavPill'"
+						(click)="_navSelect(index, item)" 
+						[class.active]="selectedItem == item">
+						<a>{{ item.text }} <span class="badge">{{ item.badge }}</span></a>
 					</li>
 				</template>
 			</ul>
@@ -21,7 +22,7 @@ import {NavPill} from './nav.pill';
 	`,
 	inputs: [
 		'brand',
-		'navPills'
+		'items'
 	],
 	outputs: [
 		'navSelect'
@@ -30,15 +31,15 @@ import {NavPill} from './nav.pill';
 
 export class NavComponent implements OnInit {
 	brand: string;
-	navPills: NavPill[];
-	navSelect = new EventEmitter<number>();
+	items: NavItem[];
+	navSelect = new EventEmitter<NavItem>();
 	test: boolean = true;
-	selectedIndex: number;
+	selectedItem: NavItem;
 	
-	_navSelect(index) {
-		this.test && console.log('nav select ', index);
-		this.selectedIndex = index;
-		this.navSelect.next(index);
+	_navSelect(index, item: NavItem) {
+		this.test && console.log('nav select ', index, item);
+		this.selectedItem = item;
+		this.navSelect.next(item);
 	}
 	
 	constructor(element: ElementRef) {
@@ -48,9 +49,6 @@ export class NavComponent implements OnInit {
 	}
 	
 	ngOnInit() {
-		var selectedIndex = _.findIndex(this.navPills, { active: true });
-		if (selectedIndex > -1) {
-			this._navSelect(selectedIndex);
-		}
+		this.selectedItem = _.find(this.items, { active: true });
 	}
 }
