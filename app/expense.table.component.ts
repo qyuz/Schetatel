@@ -1,7 +1,8 @@
-import {Component, EventEmitter} from 'angular2/core';
+import {Component, EventEmitter} from 'angular2/core'
+import {ExpenseItem} from './expense.item'
 
 @Component({
-    selector: 'all-table',
+    selector: 'expense-table',
 	template: `
 		<table class="table">
 			<thead> 
@@ -20,7 +21,7 @@ import {Component, EventEmitter} from 'angular2/core';
 					<td>{{ item.description }}</td>
 					<td class="col-md-1">{{ item.number }}</td>
 					<td class="col-md-1">{{ item.date }}</td>
-					<td class="col-md-2">{{ item.filterName }}</td>
+					<td class="col-md-2">{{ item.filter.name }}</td>
 					<td class="col-md-1">
 						<div style="float: left; padding-right: 5px;" (click)="_addFilter(index, item)">Add</div>
 						<div style="float: left;" (click)="_removeFilter(index, item)">Remove</div>
@@ -38,20 +39,20 @@ import {Component, EventEmitter} from 'angular2/core';
 	]
 })
 
-export class AllTableComponent {
+export class ExpenseTableComponent {
 	test: boolean = true;
 	
-	items: any;
-	addFilter = new EventEmitter<number>();
-	removeFilter = new EventEmitter<number>();
+	items: ExpenseItem[];
+	addFilter = new EventEmitter<ExpenseItem>();
+	removeFilter = new EventEmitter<ExpenseItem>();
 	
-	_addFilter(index) {
-		this.test && console.log('add filter ', index);
-		this.addFilter.next(index);
+	_addFilter(index: number, item: ExpenseItem) {
+		this.test && console.log('add filter ', item);
+		this.addFilter.next(item);
 	}
 	
-	_removeFilter(index) {
-		this.test && console.log('remove filter ', index);
-		this.removeFilter.next(index);
+	_removeFilter(index: number, item: ExpenseItem) {
+		this.test && console.log('remove filter ', item);
+		this.removeFilter.next(item);
 	}
 }

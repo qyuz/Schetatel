@@ -10,12 +10,12 @@ import {NavItem, NavPill, NavText} from './nav.item';
 			</div>
 			<ul class="nav nav-pills">
 				<template ngFor #item [ngForOf]="items" #index="index">
-					<p *ngIf="item.type == 'NavText'" class="navbar-text">{{ item.text }}</p>
-					<li *ngIf="item.type == 'NavPill'"
-						(click)="_navSelect(index, item)" 
-						[class.active]="selectedItem == item">
+					<li *ngIf="isInstanceOfNavPill(item)"
+						(click)="_select(index, item)" 
+						[class.active]="selected == item">
 						<a>{{ item.text }} <span class="badge">{{ item.badge }}</span></a>
 					</li>
+					<p *ngIf="isInstanceOfNavText(item)" class="navbar-text">{{ item.text }}</p>
 				</template>
 			</ul>
 		</div>
@@ -25,21 +25,22 @@ import {NavItem, NavPill, NavText} from './nav.item';
 		'items'
 	],
 	outputs: [
-		'navSelect'
+		'select'
 	]
 })
 
 export class NavComponent implements OnInit {
+	test: boolean = true;
+	
 	brand: string;
 	items: NavItem[];
-	navSelect = new EventEmitter<NavItem>();
-	test: boolean = true;
-	selectedItem: NavItem;
+	select = new EventEmitter<NavItem>();
+	selected: NavItem;
 	
-	_navSelect(index, item: NavItem) {
+	_select(index: number, item: NavItem) {
 		this.test && console.log('nav select ', index, item);
-		this.selectedItem = item;
-		this.navSelect.next(item);
+		this.selected = item;
+		this.select.next(item);
 	}
 	
 	constructor(element: ElementRef) {
@@ -48,7 +49,14 @@ export class NavComponent implements OnInit {
 		element.nativeElement.classList.add('navbar-fixed-top');
 	}
 	
+	isInstanceOfNavPill = (item) => item instanceof NavPill;
+	
+	isInstanceOfNavText = (item) => item instanceof NavText;
+	
 	ngOnInit() {
-		this.selectedItem = _.find(this.items, { active: true });
+		this.selected = _.find(this.items, { active: true });
+		if (this.selected) {
+			this._select(_.findIndex(this.items, { active: true }), this.selected);
+		}
 	}
 }
