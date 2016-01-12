@@ -1,19 +1,19 @@
 import {Component, EventEmitter, Inject} from 'angular2/core'
-import {ExpenseTableComponent} from './expense.table.component'
-import {ExpenseItem, FilteredExpenseItem} from './expense.item'
 import {FilterTableComponent} from './filter.table.component'
 import {FilterFormComponent} from './filter.form.component'
 import {FilterItem} from './filter.item'
 import {FilterItemService} from './filter.item.service'
 import {NavComponent} from './nav.component'
 import {NavItem, NavPill, NavText} from './nav.item'
+import {WithdrawalTableComponent} from './withdrawal.table.component'
+import {WithdrawalItem, FilteredWithdrawalItem} from './withdrawal.item'
 
 @Component({
     selector: 'schetatel',
 	template: `
 		<nav [brand]="'Schetatel'" [items]="navItems" (select)="nvSlct($event)"></nav>
 		<div class="content">
-			<expense-table [items]="expenseItems" [class.display]="navSelected == navExpenseAll"></expense-table>
+			<withdrawal-table [items]="withdrawalItems" [class.display]="navSelected == navWithdrawalAll"></withdrawal-table>
 			<table class="table" [class.display]="navSelected == navFound">
 				<thead> 
 					<tr> 
@@ -50,7 +50,7 @@ import {NavItem, NavPill, NavText} from './nav.item'
 		
 	`,
 	directives: [
-		ExpenseTableComponent,
+		WithdrawalTableComponent,
 		FilterTableComponent,
 		FilterFormComponent,
 		NavComponent
@@ -61,13 +61,13 @@ export class SchetatelComponent {
 	test: boolean = true;
 	
 	private navSelected: NavItem;
-	private navExpenseAll: NavPill = new NavPill('All');
+	private navWithdrawalAll: NavPill = new NavPill('All');
 	private navFound: NavPill = new NavPill('Found');
 	private navMissing: NavPill = new NavPill('Missing');
 	private navFiltersAll: NavPill = new NavPill('All', true);
 	private navFiltersAdd: NavPill = new NavPill('Add');
 	
-	private expenseItems: ExpenseItem[];
+	private withdrawalItems: WithdrawalItem[];
 	
 	private filterFormItem: FilterItem = new FilterItem();
 	private filterFormVisible: boolean = false;
@@ -77,8 +77,7 @@ export class SchetatelComponent {
 	}
 	
 	navItems: NavItem[] = [
-		//new NavText('Spendings'),
-		this.navExpenseAll,
+		this.navWithdrawalAll,
 		this.navFound,
 		this.navMissing,
 		new NavText('Filters'),
@@ -86,8 +85,8 @@ export class SchetatelComponent {
 		this.navFiltersAdd
 	];
 	
-	expenseItems  = [
-		new FilteredExpenseItem("desc", "number", "date", new FilterItem("fName", "fDescription", "fNumber", "fDate"))
+	withdrawalItems  = [
+		new FilteredWithdrawalItem("desc", "number", "date", new FilterItem("fName", "fDescription", "fNumber", "fDate"))
 	];
 
 	nvSlct(item: NavItem) {

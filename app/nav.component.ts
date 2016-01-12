@@ -54,9 +54,12 @@ export class NavComponent implements OnInit {
 	isInstanceOfNavText = (item) => item instanceof NavText;
 	
 	ngOnInit() {
-		this.selected = _.find(this.items, { active: true });
-		if (this.selected) {
-			this._select(_.findIndex(this.items, { active: true }), this.selected);
+		var selectedIndex;
+		
+		selectedIndex = _.findIndex(this.items, { active: true });
+		if (selectedIndex) {
+			this.selected = this.items[selectedIndex];
+			this._select(selectedIndex, this.selected);
 		}
 	}
 }

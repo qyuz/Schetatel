@@ -1,8 +1,8 @@
 import {Component, EventEmitter} from 'angular2/core'
-import {ExpenseItem} from './expense.item'
+import {WithdrawalItem} from './withdrawal.item'
 
 @Component({
-    selector: 'expense-table',
+    selector: 'withdrawal-table',
 	template: `
 		<table class="table">
 			<thead> 
@@ -39,19 +39,19 @@ import {ExpenseItem} from './expense.item'
 	]
 })
 
-export class ExpenseTableComponent {
+export class WithdrawalTableComponent {
 	test: boolean = true;
 	
-	items: ExpenseItem[];
-	addFilter = new EventEmitter<ExpenseItem>();
-	removeFilter = new EventEmitter<ExpenseItem>();
+	items: WithdrawalItem[];
+	addFilter = new EventEmitter<WithdrawalItem>();
+	removeFilter = new EventEmitter<WithdrawalItem>();
 	
-	_addFilter(index: number, item: ExpenseItem) {
+	_addFilter(index: number, item: WithdrawalItem) {
 		this.test && console.log('add filter ', item);
 		this.addFilter.next(item);
 	}
 	
-	_removeFilter(index: number, item: ExpenseItem) {
+	_removeFilter(index: number, item: WithdrawalItem) {
 		this.test && console.log('remove filter ', item);
 		this.removeFilter.next(item);
 	}
