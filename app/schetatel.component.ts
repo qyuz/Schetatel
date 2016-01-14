@@ -73,8 +73,12 @@ export class SchetatelComponent {
 	private filterFormVisible: boolean = false;
 	private filterItemService: FilterItemService;
 	
-	constructor(private filterItemService: FilterItemService) {
-	}
+	constructor(filterItemService: FilterItemService) {
+        this.filterItemService = filterItemService;
+        this.withdrawalItems  = [
+            new FilteredWithdrawalItem("desc", "number", "date", new FilterItem("fName", "fDescription", "fNumber", "fDate"))
+        ];
+    }
 	
 	navItems: NavItem[] = [
 		this.navWithdrawalAll,
@@ -85,10 +89,6 @@ export class SchetatelComponent {
 		this.navFiltersAdd
 	];
 	
-	withdrawalItems  = [
-		new FilteredWithdrawalItem("desc", "number", "date", new FilterItem("fName", "fDescription", "fNumber", "fDate"))
-	];
-
 	nvSlct(item: NavItem) {
 		this.navSelected = item;
 		this.test && console.log('nvSlct ', item)

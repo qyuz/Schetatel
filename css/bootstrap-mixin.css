@@ -1,4 +1,12 @@
 nav>.container-fluid>.nav>li {
-	padding-top: 5px;
+	padding-top: 5px; /* center NavPills */
 	cursor: pointer;
+}
+
+filter-form>form .checkbox {
+    margin-top: 5px; /* center Clear checkbox */
+}
+
+filter-form>form>div:last-child {
+    margin: 25px 0px 20px 0px; /* form button spacing */
 }

@@ -13,11 +13,4 @@ export class FilterItem {
 		this.number = number == null ? "" : number;
 		this.date = date == null ? "" : date;
 	}
-	
-	clear() {
-		this.name = "";
-		this.description = "";
-		this.number = "";
-		this.date = "";
-	}
 }
