@@ -23,8 +23,8 @@ import {WithdrawalItem} from './type'
 					<td class="col-md-1">{{ item.date }}</td>
 					<td class="col-md-2">{{ item.filter.name }}</td>
 					<td class="col-md-1">
-						<div style="float: left; padding-right: 5px;" (click)="_addFilter(index, item)">Add</div>
-						<div style="float: left;" (click)="_removeFilter(index, item)">Remove</div>
+						<div style="float: left; padding-right: 5px;" (click)="_add(index, item)">Add</div>
+						<div style="float: left;" (click)="_remove(index, item)">Remove</div>
 					</td>
 				</tr>
 			</tbody> 
@@ -34,8 +34,8 @@ import {WithdrawalItem} from './type'
 		'items'
 	],
 	outputs: [
-		'addFilter',
-		'removeFilter'
+		'add',
+		'remove'
 	]
 })
 
@@ -43,16 +43,16 @@ export class WithdrawalTableComponent {
 	test: boolean = true;
 	
 	items: WithdrawalItem[];
-	addFilter = new EventEmitter<WithdrawalItem>();
-	removeFilter = new EventEmitter<WithdrawalItem>();
+	add = new EventEmitter<WithdrawalItem>();
+	remove = new EventEmitter<WithdrawalItem>();
 	
-	_addFilter(index: number, item: WithdrawalItem) {
+	_add(index: number, item: WithdrawalItem) {
 		this.test && console.log('add filter ', item);
-		this.addFilter.next(item);
+		this.add.next(item);
 	}
 	
-	_removeFilter(index: number, item: WithdrawalItem) {
+	_remove(index: number, item: WithdrawalItem) {
 		this.test && console.log('remove filter ', item);
-		this.removeFilter.next(item);
+		this.remove.next(item);
 	}
 }

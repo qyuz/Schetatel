@@ -63,6 +63,7 @@ import {FilterItemService} from './filter.item.service';
             <button class="btn btn-default" [disabled]="!item.name" (click)="_add(item)">Add</button>
             <button class="btn btn-success" (click)="_testFilter(item)">Test</button>
             <button class="btn btn-warning" (click)="_clearFlags(); _clearItem();">Clear</button>
+            <button class="btn btn-warning" (click)="close.next()">Close</button>
           </div>
 		</form>
 	`,
@@ -70,7 +71,8 @@ import {FilterItemService} from './filter.item.service';
 		'item'
 	],
 	outputs: [
-		'add'
+		'add',
+        'close'
 	]
 })
 
@@ -79,6 +81,7 @@ export class FilterFormComponent implements OnChanges {
 	
 	item: FilterItem;
 	add = new EventEmitter<FilterItem>();
+    close = new EventEmitter();
 	
 	private _manualName: boolean = false;
     private _isDescriptionClear: boolean = false;
@@ -88,7 +91,8 @@ export class FilterFormComponent implements OnChanges {
     ngOnChanges(changes: {[propName: string]: SimpleChange}) {
         if (_.has(changes, 'item')) {
             this.test && console.log('item changed');
-            this._clearFlags();  
+            this._clearFlags();
+            this._computeName();  
         }
     }
 	

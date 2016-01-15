@@ -13,7 +13,7 @@ import {WithdrawalItem, FilteredWithdrawalItem} from './type'
 	template: `
 		<nav [brand]="'Schetatel'" [items]="navItems" (select)="navSelect($event)"></nav>
 		<div class="content">
-			<withdrawal-table [items]="withdrawalItems" [class.display]="navSelected === navWithdrawalAll"></withdrawal-table>
+			<withdrawal-table [items]="withdrawalItems" [class.display]="navSelected === navWithdrawalAll" (add)="setWithdrawalFilterForm($event)"></withdrawal-table>
 			<table class="table" [class.display]="navSelected === navFound">
 				<thead> 
 					<tr> 
@@ -45,7 +45,7 @@ import {WithdrawalItem, FilteredWithdrawalItem} from './type'
 				</tbody> 
 			</table>
 			<filter-table [items]="filterItemService.items" (add)="setFilterForm($event)" (remove)="removeFilter($event)" [class.display]="navSelected === navFiltersAll"></filter-table>
-			<filter-form [item]="filterFormItem" (add)="addFilter($event)" [class.display]="filterFormVisible === true || navSelected === navFiltersAdd"></filter-form>
+			<filter-form [item]="filterFormItem" (add)="addFilter($event)" (close)="filterFormVisible = false" [class.display]="filterFormVisible === true || navSelected === navFiltersAdd"></filter-form>
 		</div>
 		
 	`,
@@ -107,6 +107,14 @@ export class SchetatelComponent {
 	setFilterForm(item: FilterItem) {
 		this.toggleFilterForm(true);
 		this.filterFormItem = new FilterItem(item.name, item.description, item.number, item.date);
+	}
+	
+	setWithdrawalFilterForm(item: WithdrawalItem) {
+		var filterItem: FilterItem;
+		
+		filterItem = new FilterItem("", item.description, item.number, item.date);
+		
+		this.setFilterForm(filterItem);
 	}
 	
 	toggleFilterForm(open: boolean) {
