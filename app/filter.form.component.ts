@@ -92,7 +92,11 @@ export class FilterFormComponent implements OnChanges {
         if (_.has(changes, 'item')) {
             this.test && console.log('item changed');
             this._clearFlags();
-            this._computeName();  
+			if (_.get(changes, 'item.currentValue.name')) {
+				this._manualName = true;
+			} else {
+				this._computeName();
+			}
         }
     }
 	
@@ -127,9 +131,7 @@ export class FilterFormComponent implements OnChanges {
             _date = this._isDateClear ? "" : this.item.date;
             _name = `${ _description }${ _number }${ _date }`;
             
-            if (_name) { // don't leave name empty if all fields are disabled
-                setTimeout(() => this.item.name = _name);    
-            }
+			setTimeout(() => this.item.name = _name);
 		}
 	}
 	
