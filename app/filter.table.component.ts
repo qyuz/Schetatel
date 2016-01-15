@@ -46,12 +46,12 @@ export class FilterTableComponent {
 	add = new EventEmitter<FilterItem>();
 	remove = new EventEmitter<FilterItem>();
 	
-	_add(index, item) {
+	private _add(index: number, item: FilterItem) {
 		this.test && console.log('add ', index, item);
 		this.add.next(item);
 	}
 	
-	_remove(index, item) {
+	private _remove(index: number, item: FilterItem) {
 		this.test && console.log('remove ', index, item);
 		this.remove.next(item);
 	}

@@ -11,10 +11,10 @@ import {WithdrawalItem, FilteredWithdrawalItem} from './withdrawal.item'
 @Component({
     selector: 'schetatel',
 	template: `
-		<nav [brand]="'Schetatel'" [items]="navItems" (select)="nvSlct($event)"></nav>
+		<nav [brand]="'Schetatel'" [items]="navItems" (select)="navSelect($event)"></nav>
 		<div class="content">
-			<withdrawal-table [items]="withdrawalItems" [class.display]="navSelected == navWithdrawalAll"></withdrawal-table>
-			<table class="table" [class.display]="navSelected == navFound">
+			<withdrawal-table [items]="withdrawalItems" [class.display]="navSelected === navWithdrawalAll"></withdrawal-table>
+			<table class="table" [class.display]="navSelected === navFound">
 				<thead> 
 					<tr> 
 						<th>#</th> 
@@ -44,16 +44,16 @@ import {WithdrawalItem, FilteredWithdrawalItem} from './withdrawal.item'
 					</tr> 
 				</tbody> 
 			</table>
-			<filter-table [items]="filterItemService.items" (add)="setFilterForm($event)" (remove)="removeFilter($event)" [class.display]="navSelected == navFiltersAll"></filter-table>
-			<filter-form [item]="filterFormItem" (add)="addFilter($event)" [class.display]="filterFormVisible == true || navSelected == navFiltersAdd"></filter-form>
+			<filter-table [items]="filterItemService.items" (add)="setFilterForm($event)" (remove)="removeFilter($event)" [class.display]="navSelected === navFiltersAll"></filter-table>
+			<filter-form [item]="filterFormItem" (add)="addFilter($event)" [class.display]="filterFormVisible === true || navSelected === navFiltersAdd"></filter-form>
 		</div>
 		
 	`,
 	directives: [
-		WithdrawalTableComponent,
 		FilterTableComponent,
 		FilterFormComponent,
-		NavComponent
+		NavComponent,
+		WithdrawalTableComponent
 	]
 })
 
@@ -89,9 +89,9 @@ export class SchetatelComponent {
 		this.navFiltersAdd
 	];
 	
-	nvSlct(item: NavItem) {
+	navSelect(item: NavItem) {
 		this.navSelected = item;
-		this.test && console.log('nvSlct ', item)
+		this.test && console.log('navSelect ', item)
 	}
 	
 	addFilter(item: FilterItem) {
