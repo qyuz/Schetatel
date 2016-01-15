@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit} from 'angular2/core';
-import {NavItem, NavPill, NavText} from './nav.item';
+import {NavItem, NavPill, NavText} from './type';
 
 @Component({
     selector: 'nav',

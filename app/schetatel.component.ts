@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Inject} from 'angular2/core'
 import {FilterTableComponent} from './filter.table.component'
 import {FilterFormComponent} from './filter.form.component'
-import {FilterItem} from './filter.item'
+import {FilterItem} from './type'
 import {FilterItemService} from './filter.item.service'
 import {NavComponent} from './nav.component'
-import {NavItem, NavPill, NavText} from './nav.item'
+import {NavItem, NavPill, NavText} from './type'
 import {WithdrawalTableComponent} from './withdrawal.table.component'
-import {WithdrawalItem, FilteredWithdrawalItem} from './withdrawal.item'
+import {WithdrawalItem, FilteredWithdrawalItem} from './type'
 
 @Component({
     selector: 'schetatel',

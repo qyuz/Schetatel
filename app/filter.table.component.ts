@@ -1,5 +1,5 @@
 import {Component, EventEmitter} from 'angular2/core'
-import {FilterItem} from './filter.item'
+import {FilterItem} from './type'
 
 @Component({
     selector: 'filter-table',

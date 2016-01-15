@@ -1,5 +1,5 @@
 import {Component, EventEmitter} from 'angular2/core'
-import {WithdrawalItem} from './withdrawal.item'
+import {WithdrawalItem} from './type'
 
 @Component({
     selector: 'withdrawal-table',

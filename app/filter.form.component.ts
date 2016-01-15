@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnChanges, SimpleChange} from 'angular2/core';
-import {FilterItem} from './filter.item';
+import {FilterItem} from './type';
 import {FilterItemService} from './filter.item.service';
 
 @Component({

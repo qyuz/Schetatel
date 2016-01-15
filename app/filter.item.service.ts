@@ -1,5 +1,5 @@
 import {Injectable} from 'angular2/core';
-import {FilterItem} from './filter.item';
+import {FilterItem} from './type';
 
 export class FilterItemService {
 	private items: FilterItem[];
