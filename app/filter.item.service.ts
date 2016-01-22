@@ -3,19 +3,23 @@ import {FilterItem} from './type';
 
 export class FilterItemService {
 	private items: FilterItem[];
+	private itemsPromise: Promise<FilterItem[]>;
 	
 	constructor() {
 		var filterItemService;
 		
 		filterItemService = this;
 		
-		fetch('https://qyuz.cloudant.com/schetatel/_all_docs?include_docs=true', {
-			method: 'get'
-		}).then(function(response) {
-			return response.json();
-		  }).then(function(json) {
-			filterItemService.items = json.rows.map(_.property('doc.data'));
-		  });
+		this.itemsPromise = new Promise(function(resolve, reject) {
+			fetch('https://qyuz.cloudant.com/schetatel/_all_docs?include_docs=true', {
+				method: 'get'
+				}).then(function(response) {
+					return response.json();
+				}).then(function(json) {
+					filterItemService.items = json.rows.map(_.property('doc.data'));
+					resolve(filterItemService.items);
+				});	
+		});
 	}
 	
 	add(item: FilterItem) {
@@ -53,6 +57,13 @@ export class FilterItemService {
 	
 	getAll() {
 		return this.items;
+	}
+	
+	getAllPromise():any {
+		if (this.items) {
+			return Promise.resolve(this.items);
+		}
+		return this.itemsPromise;
 	}
 	
 	remove(item: FilterItem) {

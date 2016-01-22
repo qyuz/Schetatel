@@ -3,6 +3,7 @@ import {FilterTableComponent} from './filter.table.component'
 import {FilterFormComponent} from './filter.form.component'
 import {FilterItem} from './type'
 import {FilterItemService} from './filter.item.service'
+import {FilterPipe} from './filter.pipe'
 import {NavComponent} from './nav.component'
 import {NavItem, NavPill, NavText} from './type'
 import {WithdrawalTableComponent} from './withdrawal.table.component'
@@ -14,7 +15,8 @@ import {WithdrawalItem, FilteredWithdrawalItem} from './type'
 		<nav [brand]="'Schetatel'" [items]="navItems" (select)="navSelect($event)"></nav>
 		<div class="content">
 			<withdrawal-table [items]="withdrawalItems" [class.display]="navSelected === navWithdrawalAll" (add)="setWithdrawalFilterForm($event)"></withdrawal-table>
-			<table class="table" [class.display]="navSelected === navFound">
+			<withdrawal-table [items]="withdrawalItems | filterWithdrawal" [class.display]="navSelected === navFound" (add)="setWithdrawalFilterForm($event)"></withdrawal-table>
+			<table class="table" [class.display]="navSelected === navMissing">
 				<thead> 
 					<tr> 
 						<th>#</th> 
@@ -54,6 +56,9 @@ import {WithdrawalItem, FilteredWithdrawalItem} from './type'
 		FilterFormComponent,
 		NavComponent,
 		WithdrawalTableComponent
+	],
+	pipes: [
+		FilterPipe
 	]
 })
 

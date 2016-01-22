@@ -21,7 +21,7 @@ import {WithdrawalItem} from './type'
 					<td>{{ item.description }}</td>
 					<td class="col-md-1">{{ item.number }}</td>
 					<td class="col-md-1">{{ item.date }}</td>
-					<td class="col-md-2">{{ item.filter.name }}</td>
+					<td class="col-md-2">{{ item.filter && item.filter.name }}</td>
 					<td class="col-md-1">
 						<div style="float: left; padding-right: 5px;" (click)="_add(index, item)">Add</div>
 						<div style="float: left;" (click)="_remove(index, item)">Remove</div>
