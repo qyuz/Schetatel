@@ -13,32 +13,24 @@ export class FilterPipe implements PipeTransform {
         this.filterItemService = filterItemService;
     }
 	
-	transform(items: WithdrawalItem[]) {
-		var filterPipe;
-		
-		filterPipe = this;
-		
-		if (Date.now() - this.lastTransform > 100) {	//because pure pipes aren't cool anymore
-			this.filterItemService.getAllPromise()
-				.then(function(filterItems: FilterItem[]) {
-					filterPipe.filteredItems = _.filter(items, _.partial(FilterPipe.prototype.filter, _, filterItems));
-				});
+	transform(items: WithdrawalItem[], [filterItems]: any[]) {		
+		if (filterItems && Date.now() - this.lastTransform > 100) {
+			this.filteredItems = _.filter(items, _.partial(FilterPipe.filter, _, filterItems));
 			this.lastTransform = Date.now();
-			console.log(this.lastTransform);
 		}
 		
-		return filterPipe.filteredItems;
+		return this.filteredItems;
 	}
 	
-	filter(withdrawalItem: WithdrawalItem, filterItems: FilterItem[]) {
+	static filter(withdrawalItem: WithdrawalItem, filterItems: FilterItem[]) {
 		var match;
 		
-		match = _.any(filterItems, _.partial(FilterPipe.prototype.match, withdrawalItem));
+		match = _.any(filterItems, _.partial(FilterPipe.match, withdrawalItem));
 		
 		return match;
 	}
 	
-	match(withdrawalItem: WithdrawalItem, filterItem: FilterItem) {
+	static match(withdrawalItem: WithdrawalItem, filterItem: FilterItem) {
 		var descriptionMatch, numberMatch, dateMatch;
 		
 		descriptionMatch = numberMatch = dateMatch = true;

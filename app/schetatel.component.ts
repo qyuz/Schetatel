@@ -15,7 +15,7 @@ import {WithdrawalItem, FilteredWithdrawalItem} from './type'
 		<nav [brand]="'Schetatel'" [items]="navItems" (select)="navSelect($event)"></nav>
 		<div class="content">
 			<withdrawal-table [items]="withdrawalItems" [class.display]="navSelected === navWithdrawalAll" (add)="setWithdrawalFilterForm($event)"></withdrawal-table>
-			<withdrawal-table [items]="withdrawalItems | filterWithdrawal" [class.display]="navSelected === navFound" (add)="setWithdrawalFilterForm($event)"></withdrawal-table>
+			<withdrawal-table [items]="withdrawalItems | filterWithdrawal:filterItemService.items" [class.display]="navSelected === navFound" (add)="setWithdrawalFilterForm($event)"></withdrawal-table>
 			<table class="table" [class.display]="navSelected === navMissing">
 				<thead> 
 					<tr> 
@@ -81,7 +81,8 @@ export class SchetatelComponent {
 	constructor(filterItemService: FilterItemService) {
         this.filterItemService = filterItemService;
         this.withdrawalItems  = [
-            new FilteredWithdrawalItem("desc", "number", "date", new FilterItem("fName", "fDescription", "fNumber", "fDate"))
+            new FilteredWithdrawalItem("desc", "number", "date", new FilterItem("fName", "fDescription", "fNumber", "fDate")),
+			new FilteredWithdrawalItem("desc2", "number", "date", new FilterItem("fName", "fDescription", "fNumber", "fDate"))
         ];
     }
 	
