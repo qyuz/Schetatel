@@ -4,7 +4,7 @@ import {FilterItem} from './type';
 import {FilteredWithdrawalItem, WithdrawalItem} from './type';
 
 @Pipe({name: 'filterWithdrawal', pure: false})
-export class FilterPipe implements PipeTransform {
+export class FilterWithdrawalPipe implements PipeTransform {
 	private filterItemService: FilterItemService;
 	private filteredItems: WithdrawalItem[];
 	private lastTransform: number = Date.now();
@@ -13,9 +13,16 @@ export class FilterPipe implements PipeTransform {
         this.filterItemService = filterItemService;
     }
 	
-	transform(items: WithdrawalItem[], [filterItems]: any[]) {		
-		if (filterItems && Date.now() - this.lastTransform > 100) {
-			this.filteredItems = _.filter(items, _.partial(FilterPipe.filter, _, filterItems));
+	transform(items: WithdrawalItem[]) {
+		var filterWithdrawalPipe;
+		
+		filterWithdrawalPipe = this;
+				
+		if (Date.now() - this.lastTransform > 100) {
+			this.filterItemService.getAllPromise()
+				.then(function(filterItems) {
+					filterWithdrawalPipe.filteredItems = _.filter(items, _.partial(FilterWithdrawalPipe.filter, _, filterItems));		
+				});
 			this.lastTransform = Date.now();
 		}
 		
@@ -25,7 +32,7 @@ export class FilterPipe implements PipeTransform {
 	static filter(withdrawalItem: WithdrawalItem, filterItems: FilterItem[]) {
 		var match;
 		
-		match = _.any(filterItems, _.partial(FilterPipe.match, withdrawalItem));
+		match = _.any(filterItems, _.partial(FilterWithdrawalPipe.match, withdrawalItem));
 		
 		return match;
 	}
