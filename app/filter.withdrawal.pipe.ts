@@ -19,7 +19,7 @@ export class FilterWithdrawalPipe implements PipeTransform {
 		filterWithdrawalPipe = this;
 				
 		if (Date.now() - this.lastTransform > 100) {
-			this.filterItemService.getAllPromise()
+			this.filterItemService.fetchAll()
 				.then(function(filterItems) {
 					filterWithdrawalPipe.filteredItems = _.filter(items, _.partial(FilterWithdrawalPipe.filter, _, filterItems));		
 				});

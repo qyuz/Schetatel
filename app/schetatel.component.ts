@@ -46,7 +46,7 @@ import {WithdrawalItem, FilteredWithdrawalItem} from './type'
 					</tr> 
 				</tbody> 
 			</table>
-			<filter-table [items]="filterItemService.items" (add)="setFilterForm($event)" (remove)="removeFilter($event)" [class.display]="navSelected === navFiltersAll"></filter-table>
+			<filter-table [items]="filterItems" (add)="setFilterForm($event)" (remove)="removeFilter($event)" [class.display]="navSelected === navFiltersAll"></filter-table>
 			<filter-form [item]="filterFormItem" (add)="addFilter($event)" (close)="filterFormVisible = false" [class.display]="filterFormVisible === true || navSelected === navFiltersAdd"></filter-form>
 		</div>
 		
@@ -72,6 +72,7 @@ export class SchetatelComponent {
 	private navFiltersAll: NavPill = new NavPill('All', true);
 	private navFiltersAdd: NavPill = new NavPill('Add');
 	
+	private filterItems: FilterItem[];
 	private withdrawalItems: WithdrawalItem[];
 	
 	private filterFormItem: FilterItem = new FilterItem();
@@ -80,7 +81,9 @@ export class SchetatelComponent {
 	
 	constructor(filterItemService: FilterItemService) {
         this.filterItemService = filterItemService;
-        this.withdrawalItems  = [
+		
+		this.updateFilterItems();
+	    this.withdrawalItems  = [
             new FilteredWithdrawalItem("desc", "number", "date", new FilterItem("fName", "fDescription", "fNumber", "fDate")),
 			new FilteredWithdrawalItem("desc2", "number", "date", new FilterItem("fName", "fDescription", "fNumber", "fDate"))
         ];
@@ -102,12 +105,16 @@ export class SchetatelComponent {
 	
 	addFilter(item: FilterItem) {
 		this.test && console.log('add filter ', item)
-		this.filterItemService.add(item);
+		this.filterItemService.add(item)
+			.then(() =>
+				this.updateFilterItems());
 	}
 	
 	removeFilter(item: FilterItem) {
 		this.test && console.log('remove filter ', item);
-		this.filterItemService.remove(item);
+		this.filterItemService.remove(item)
+			.then(() => 
+				this.updateFilterItems());
 	}
 	
 	setFilterForm(item: FilterItem) {
@@ -125,5 +132,11 @@ export class SchetatelComponent {
 	
 	toggleFilterForm(open: boolean) {
 		this.filterFormVisible = open;
+	}
+	
+	updateFilterItems() {
+		this.filterItemService.fetchAll().
+			then((filterItems) =>
+				this.filterItems = filterItems);		
 	}
 }

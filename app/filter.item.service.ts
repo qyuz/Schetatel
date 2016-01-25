@@ -42,7 +42,7 @@ export class FilterItemService {
 			})
 		});
 
-		fetch(request)  
+		return fetch(request)  
 			.then(function(response) {
 				if (response.status == "201") {
 					filterItemService.items.push(_.extend({}, item));
@@ -50,16 +50,14 @@ export class FilterItemService {
 					alert('error while adding filter item to service')
 				}
 				return response.text();
-			}).then(function(text) {
-				console.log(text); 
 			});
 	}
 	
-	getAll() {
+	getItems():FilterItem[] {
 		return this.items;
 	}
 	
-	getAllPromise():any {
+	fetchAll():Promise<FilterItem[]> {
 		if (this.items) {
 			return Promise.resolve(this.items);
 		}
@@ -71,7 +69,7 @@ export class FilterItemService {
 		
 		filterItemService = this;
 		
-		fetch('https://qyuz.cloudant.com/schetatel/' + item.name)
+		return fetch('https://qyuz.cloudant.com/schetatel/' + item.name)
 			.then(function(response) {
 				return response.json()
 			})
@@ -84,7 +82,7 @@ export class FilterItemService {
 				return request;
 			})
 			.then(function(request) {
-				fetch(request)  
+				return fetch(request)  
 					.then(function(response) {
 						if (response.status == "200") {
 							filterItemService.items = _.reject(filterItemService.items, { name: item.name });
@@ -92,8 +90,6 @@ export class FilterItemService {
 							alert('error while removing filter item from service')
 						}
 						return response.text();
-					}).then(function(text) {
-						console.log(text); 
 					});
 			});
 	}
