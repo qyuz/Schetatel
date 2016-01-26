@@ -7,26 +7,22 @@ import {FilteredWithdrawalItem, WithdrawalItem} from './type';
 export class FilterWithdrawalPipe implements PipeTransform {
 	private filterItemService: FilterItemService;
 	private filteredItems: WithdrawalItem[];
-	private lastTransform: number = Date.now();
+	private debounceFetchAllFilter: Function; 
 	
 	constructor(filterItemService: FilterItemService) {
         this.filterItemService = filterItemService;
+		this.debounceFetchAllFilter = _.debounce(this.fetchAllAndFilter, 25);
     }
 	
 	transform(items: WithdrawalItem[]) {
-		var filterWithdrawalPipe;
-		
-		filterWithdrawalPipe = this;
-				
-		if (Date.now() - this.lastTransform > 100) {
-			this.filterItemService.fetchAll()
-				.then(function(filterItems) {
-					filterWithdrawalPipe.filteredItems = _.filter(items, _.partial(FilterWithdrawalPipe.filter, _, filterItems));		
-				});
-			this.lastTransform = Date.now();
-		}
-		
+		this.debounceFetchAllFilter(items);	
 		return this.filteredItems;
+	}
+	
+	fetchAllAndFilter(withdrawalItems: WithdrawalItem[]) {
+		this.filterItemService.fetchAll()
+			.then((filterItems) => 
+				this.filteredItems = _.filter(withdrawalItems, _.partial(FilterWithdrawalPipe.filter, _, filterItems)));
 	}
 	
 	static filter(withdrawalItem: WithdrawalItem, filterItems: FilterItem[]) {
