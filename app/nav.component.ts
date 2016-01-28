@@ -17,14 +17,21 @@ import {NavItem, NavPill, NavText} from './type';
 					</li>
 					<p *ngIf="isInstanceOfNavText(item)" class="navbar-text">{{ item.text }}</p>
 				</template>
+				<form class="navbar-form navbar-left">
+					<div class="form-group">
+						<input type="text" [ngModel]="date" (ngModelChange)="dateChange.next($event)" class="form-control" placeholder="Date">
+					</div>
+				</form>
 			</ul>
 		</div>
 	`,
 	inputs: [
 		'brand',
+		'date',
 		'items'
 	],
 	outputs: [
+		'dateChange',
 		'select'
 	]
 })
@@ -34,6 +41,8 @@ export class NavComponent implements OnInit {
 	
 	brand: string;
 	items: NavItem[];
+	date: String;
+	dateChange = new EventEmitter<String>();
 	select = new EventEmitter<NavItem>();
 	selected: NavItem;
 	

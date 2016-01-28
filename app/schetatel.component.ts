@@ -12,7 +12,7 @@ import {WithdrawalItem, FilteredWithdrawalItem} from './type'
 @Component({
     selector: 'schetatel',
 	template: `
-		<nav [brand]="'Schetatel'" [items]="navItems" (select)="navSelect($event)"></nav>
+		<nav [brand]="'Schetatel'" [items]="navItems" [date]="date" (dateChange)="debounceDateChange($event)" (select)="navSelect($event)"></nav>
 		<div class="content">
 			<withdrawal-table [items]="withdrawalItems" [class.display]="navSelected === navWithdrawalAll" (add)="setWithdrawalFilterForm($event)"></withdrawal-table>
 			<withdrawal-table [items]="withdrawalItems | filterWithdrawal" [class.display]="navSelected === navFound" (add)="setWithdrawalFilterForm($event)"></withdrawal-table>
@@ -72,21 +72,31 @@ export class SchetatelComponent {
 	private navFiltersAll: NavPill = new NavPill('All', true);
 	private navFiltersAdd: NavPill = new NavPill('Add');
 	
+	private date: String = "2016-01";
 	private filterItems: FilterItem[];
+	private filterFormItem: FilterItem = new FilterItem();
+	private filterItemService: FilterItemService;
+	private filterFormVisible: boolean = false;
 	private withdrawalItems: WithdrawalItem[];
 	
-	private filterFormItem: FilterItem = new FilterItem();
-	private filterFormVisible: boolean = false;
-	private filterItemService: FilterItemService;
+	private debounceDateChange: Function;
 	
 	constructor(filterItemService: FilterItemService) {
-        this.filterItemService = filterItemService;
-		
-		this.updateFilterItems();
-	    this.withdrawalItems  = [
+		this.filterItemService = filterItemService;
+        this.withdrawalItems  = [
             new FilteredWithdrawalItem("desc", "number", "date", new FilterItem("fName", "fDescription", "fNumber", "fDate")),
 			new FilteredWithdrawalItem("desc2", "number", "date", new FilterItem("fName", "fDescription", "fNumber", "fDate"))
         ];
+		
+		this.debounceDateChange = _.debounce(
+			this.dateChange, 
+			1000,
+			{ 
+				leading: false,
+				trailing: true
+		});
+		
+		this.updateFilterItems();
     }
 	
 	navItems: NavItem[] = [
@@ -97,6 +107,11 @@ export class SchetatelComponent {
 		this.navFiltersAll,
 		this.navFiltersAdd
 	];
+	
+	dateChange(date: String) {
+		this.date = date;
+		debugger;
+	}
 	
 	navSelect(item: NavItem) {
 		this.navSelected = item;
